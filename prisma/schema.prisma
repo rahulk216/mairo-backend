@@ -9,3 +9,64 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id                   Int @id @default(autoincrement())
+  name                String
+  role                UserType
+  password            String
+  org_id              Int
+  organization        Organization @relation(fields: [org_id], references: [id])
+}
+
+model Organization {
+  id                  Int @id @default(autoincrement())
+  name                String
+  orgLocation         String
+  description         String
+  user                User[]
+  jobs                Jobs[]
+}
+
+model Jobs{
+  id                  Int @id @default(autoincrement())
+  roleName            String
+  jobDescription      String
+  vacancies           Int
+  org_id              Int
+  organization        Organization @relation(fields: [org_id], references: [id])
+  skill_id            Int
+  skill               Skill @relation(fields: [skill_id], references: [id])
+  jobCategory         String
+  jobPublishDate      DateTime
+  expiryDate          DateTime
+  experience          Int
+  jobTier             String
+  skillList           String
+  jobSalary           Float
+  candidate           Candidate[]
+}
+
+model Candidate{
+  id                  Int @id @default(autoincrement())
+  name                String
+  candidateLocation   String
+  experience          Float
+  email               String
+  phone               String
+  jobStatus           String
+  job_id              Int
+  jobs                Jobs @relation(fields: [job_id], references: [id])
+  candResumeURL       String
+}
+
+model Skill{
+  id                  Int @id @default(autoincrement())
+  skillName           String
+  jobs                Jobs[]
+}
+
+enum UserType {
+  ADMIN
+  MAIORA
+}
