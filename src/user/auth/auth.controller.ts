@@ -1,6 +1,7 @@
-import { signupDto, signinDto } from './../dtos/auth.dtos';
+import { signupDto, signinDto, generateProductKeyDto } from './../dtos/auth.dtos';
 import { Body, Controller, Post, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { UserType } from '@prisma/client';
 
 
 @Controller('auth')

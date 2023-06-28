@@ -1,5 +1,6 @@
 import { matchesPattern } from '@babel/types';
-import {IsString, IsNotEmpty, IsEmail, MinLength, Matches} from 'class-validator'
+import { UserType } from '@prisma/client';
+import {IsString, IsNotEmpty, IsEmail, MinLength, Matches, isEnum, IsEnum} from 'class-validator'
 
 export class signupDto{
   @IsString()
@@ -18,5 +19,17 @@ export class signinDto{
   email: string;
 
   @IsString()
+  @MinLength(5)
   password: string;
+
+  @IsEnum(UserType)
+  role: UserType
+}
+
+export class generateProductKeyDto{
+  @IsEmail()
+  email: string;
+
+  @IsEnum(UserType)
+  userType: UserType
 }
