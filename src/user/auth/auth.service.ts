@@ -4,7 +4,6 @@ import * as bcrypt from 'bcryptjs';
 import { UserType } from '@prisma/client';
 import { generateJWT } from 'src/util';
 
-
 interface SignupParams {
   email: string;
   password: string;
@@ -20,22 +19,18 @@ interface SigninParams {
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly prismaSevice: PrismaService) { }
+  constructor(private readonly prismaService: PrismaService) {}
 
   async signup({ email, password, name, phone }: SignupParams) {
-    return 'signup'
+    return 'signup';
   }
 
   async login({ email, password, role }: SigninParams) {
-    console.log(email,password,role)
-    const user = await this.prismaSevice.user.findUnique({
-      where: {
-        email,
-      },
-    });
-console.log(user)
+    console.log(email);
+    const user = await this.prismaService.user.findUnique({ where: { email } });
+    console.log(user);
     if (!user) {
-      throw new HttpException("Invalid Credentials", 400);
+      throw new HttpException('Invalid Credentials', 400);
     }
 
     if (user.role === role) {
@@ -48,18 +43,13 @@ console.log(user)
       // }
 
       return generateJWT(user.name, user.id);
+    } else {
+      throw new HttpException('Invalid Credentials', 400);
     }
-    else {
-      throw new HttpException("Invalid Credentials", 400);
-    }
-
-
-
   }
 
-
   async getUser() {
-    return 'getUser'
+    return 'getUser';
   }
 
   // generateProductKey(email: string, userType: UserType) {

@@ -22,11 +22,4 @@ export class AuthController {
   getuser(@Body() body: signinDto){
     return this.authService.getUser()
   }
-
-  // @Post("key")
-  // generateProductKey(
-  //   @Body() {userType, email}: generateProductKeyDto
-  // ){
-  //   return this.authService.generateProductKey(email, userType)
-  // }
 }
