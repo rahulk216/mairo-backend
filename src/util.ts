@@ -13,3 +13,7 @@ export function generateJWT(name: string, id: number, role: string) {
     },
   );
 }
+
+export function jwtDecode(token: string){
+  return jwt.decode(token)
+}
