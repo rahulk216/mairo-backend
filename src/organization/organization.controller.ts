@@ -1,4 +1,4 @@
-import { createOrganizationDto } from './dtos/organization.dtos';
+import { createOrganizationDto, updateOrganizationDto } from './dtos/organization.dtos';
 import { OrganizationService } from './organization.service';
 import {
   Controller,
@@ -25,13 +25,13 @@ export class OrganizationController {
   }
 
   @Get(':id')
-  async getOrganizationById(@Param('id') id) {
+  async getOrganizationById(@Param('id') id: number) {
     return this.organizationService.getOrganizationById(id);
   }
 
-  @Put('')
-  async updateOrganization() {
-    return this.organizationService.updateOrganization();
+  @Put(':id')
+  async updateOrganization(@Body() body: updateOrganizationDto ,@Param('id') id: number) {
+    return this.organizationService.updateOrganization(id, body);
   }
 
   @Delete(':id')

@@ -1,11 +1,7 @@
 import {
   IsString,
   IsNotEmpty,
-  IsEmail,
-  MinLength,
-  Matches,
-  isEnum,
-  IsEnum,
+  IsOptional
 } from 'class-validator';
 
 export class createOrganizationDto {
@@ -20,4 +16,18 @@ export class createOrganizationDto {
   @IsString()
   @IsNotEmpty()     
   description: string;  
+}
+
+export class updateOrganizationDto {
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  orgLocation: string;
+
+  @IsOptional()
+  @IsString()
+  description: string;
 }
