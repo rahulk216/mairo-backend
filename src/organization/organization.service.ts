@@ -1,9 +1,5 @@
-import { createOrganizationDto, updateOrganizationDto } from './dtos/organization.dtos';
 import { PrismaService } from './../prisma/prisma.service';
-import { OrganizationModule } from './organization.module';
-import { Injectable, ConflictException, HttpException } from '@nestjs/common';
-import { returnPayload } from '../util';
-import * as bcrypt from 'bcryptjs';
+import { Injectable, ConflictException, HttpException, HttpStatus } from '@nestjs/common';
 
 interface createOrganizationParam {
   name: string;
@@ -11,7 +7,7 @@ interface createOrganizationParam {
   description: string;
 }
 
-interface updateOrganizationParams{
+interface updateOrganizationParams {
   name?: string;
   orgLocation?: string;
   description?: string;
@@ -19,7 +15,7 @@ interface updateOrganizationParams{
 
 @Injectable()
 export class OrganizationService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   async createOrganization({
     name,
@@ -59,7 +55,7 @@ export class OrganizationService {
       },
     });
 
-    if(!userExists) throw new ConflictException();
+    if (!userExists) throw new ConflictException();
 
     const response = await this.prismaService.organization.update({
       where: {
@@ -68,8 +64,8 @@ export class OrganizationService {
       data: body
     });
 
-    if(response) return returnPayload(200, "Organization Updated");
-    return returnPayload(400, "Organization  not updated")
+    if (response) throw new HttpException('Organization Updated', HttpStatus.OK);
+    throw new HttpException('Organization  not updated', HttpStatus.OK)
   }
 
   async deleteOrganization(id: number) {
@@ -79,9 +75,9 @@ export class OrganizationService {
       },
       include: { user: true, jobs: true },
     });
-    
+
     if (userExists?.user.length > 0 || userExists?.jobs.length > 0)
-      return returnPayload(204, 'A User or Job is associated with this organization');
+      throw new HttpException('A User or Job is associated with this organization', HttpStatus.NO_CONTENT)
     else {
       if (userExists) {
         const response = await this.prismaService.organization.delete({
@@ -90,9 +86,9 @@ export class OrganizationService {
           },
         });
         if (response)
-          return returnPayload(200, 'Organization deleted successfully');
+          throw new HttpException('Organization deleted successfully', HttpStatus.OK);
       }
-      return returnPayload(204, 'Organization not found');
+      throw new HttpException('Organization not found', HttpStatus.NO_CONTENT);
     }
   }
 }
