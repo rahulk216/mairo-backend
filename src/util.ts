@@ -14,12 +14,10 @@ export function generateJWT(name: string, id: number, role: string) {
   );
 }
 
-export function jwtDecode(token: string){
+export function jwtDecode(token: string) {
   return jwt.decode(token)
 }
 
-export function returnPayload(statusCode: number, message: string){
-  return {
-    statusCode: Number(statusCode) , message
-  }
+export function verifyJwt(token: string) {
+  return jwt.verify(token, process.env.JSON_T0KEN_KEY)
 }
