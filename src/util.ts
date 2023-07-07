@@ -17,3 +17,9 @@ export function generateJWT(name: string, id: number, role: string) {
 export function jwtDecode(token: string){
   return jwt.decode(token)
 }
+
+export function returnPayload(statusCode: number, message: string){
+  return {
+    statusCode: Number(statusCode) , message
+  }
+}

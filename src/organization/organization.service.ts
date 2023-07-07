@@ -2,6 +2,7 @@ import { createOrganizationDto } from './dtos/organization.dtos';
 import { PrismaService } from './../prisma/prisma.service';
 import { OrganizationModule } from './organization.module';
 import { Injectable, ConflictException, HttpException } from '@nestjs/common';
+import { returnPayload } from '../util';
 import * as bcrypt from 'bcryptjs';
 
 interface createOrganizationParam {
@@ -48,19 +49,26 @@ export class OrganizationService {
   async updateOrganization() {}
 
   async deleteOrganization(id: number) {
-    // console.log(id, 'deleteOrganization')
-    // const response = await this.prismaService.organization.delete({
-    //   where: {
-    //     id: Number(id),
-    //   },
-    // });
-
-    // if (response)
-    //   return {
-    //     statusCode: 202,
-    //     message: 'organization deleted successfully',
-    //   };
-
-    // return { statusCode: 204, message: 'organization not found' };
+    const userExists = await this.prismaService.organization.findUnique({
+      where: {
+        id: id,
+      },
+      include: { user: true, jobs: true },
+    });
+    
+    if (userExists?.user.length > 0 || userExists?.jobs.length > 0)
+      return returnPayload(204, 'Foreign Key Dependency with user and job');
+    else {
+      if (userExists) {
+        const response = await this.prismaService.organization.delete({
+          where: {
+            id: Number(id),
+          },
+        });
+        if (response)
+          return returnPayload(200, 'Organization deleted successfully');
+      }
+      return returnPayload(204, 'Organization not found');
+    }
   }
 }
