@@ -1,5 +1,5 @@
 import { signupDto, signinDto, generateProductKeyDto } from './../dtos/auth.dtos';
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get, Delete, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserType } from '@prisma/client';
 
@@ -21,5 +21,10 @@ export class AuthController {
   @Get('getuser')
   getuser(@Body() body: signinDto) {
     return this.authService.getUser()
+  }
+
+  @Delete(':id')
+  deleteUser(@Param('id') id: number) {
+    return this.authService.deleteUser(id)
   }
 }
