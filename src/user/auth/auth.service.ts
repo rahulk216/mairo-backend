@@ -68,4 +68,17 @@ export class AuthService {
   async getUser() {
     return 'getUser';
   }
+
+  async deleteUser(id){
+    const user = await this.prismaService.user.findUnique({ where: { id } });
+    if (!user) {
+      throw new HttpException('User Not Found', 400);
+    }
+    const deleteUser = await this.prismaService.user.delete({
+      where: {
+        id: id,
+      },
+    })
+    return deleteUser;
+  }
 }
