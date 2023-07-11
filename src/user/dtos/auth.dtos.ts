@@ -8,6 +8,7 @@ import {
   Matches,
   isEnum,
   IsEnum,
+  IsNumber,
 } from 'class-validator';
 
 export class signupDto {
@@ -37,4 +38,22 @@ export class generateProductKeyDto {
 
   @IsEnum(UserType)
   userType: UserType;
+}
+
+export class createUserDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  role: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  org_id: number;
 }
