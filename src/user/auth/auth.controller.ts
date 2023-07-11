@@ -1,4 +1,4 @@
-import { signupDto, signinDto, generateProductKeyDto } from './../dtos/auth.dtos';
+import { signupDto, signinDto, createUserDto } from './../dtos/auth.dtos';
 import { Body, Controller, Post, Get, Delete, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserType } from '@prisma/client';
@@ -7,6 +7,11 @@ import { UserType } from '@prisma/client';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
+
+  @Post('createuser')
+  createUser(@Body() body: createUserDto) {
+    return this.authService.createUser(body)
+  }
 
   @Post('signup')
   signup(@Body() body: signupDto) {
