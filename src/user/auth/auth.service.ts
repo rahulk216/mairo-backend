@@ -5,6 +5,7 @@ import { UserType } from '@prisma/client';
 import { generateJWT } from 'src/util';
 import * as generator from 'generate-password'
 import { MailjetService } from 'nest-mailjet'
+import { emailTemplate } from 'src/util';
 
 
 interface SignupParams {
@@ -45,7 +46,6 @@ export class AuthService {
       numbers: true
     });
     const hashedPassword = await bcrypt.hash(tentativePassword, 10);
-
     const user = await this.prismaService.user.create({
       data: {
         email,
@@ -70,6 +70,7 @@ export class AuthService {
             ],
             Subject: `Hi ${name.split(' ')[0]} !! Welcome to Maiora`,
             TextPart: `This is your password: ${tentativePassword}`,
+            HTMLPart: emailTemplate({tentativePassword})
           },
         ],
       })
@@ -143,3 +144,5 @@ export class AuthService {
     return deleteUser;
   }
 }
+
+
