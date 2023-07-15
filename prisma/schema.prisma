@@ -51,13 +51,13 @@ model Jobs{
 model Candidate{
   id                  Int @id @default(autoincrement())
   name                String
+  candidate_token     String
   candidateLocation   String
   experience          Float
   email               String
   phone               String
   jobStatus           String
-  job_id              Int
-  jobs                Jobs @relation(fields: [job_id], references: [id])
+  jobs                Jobs []
   candResumeURL       String
 }
 
