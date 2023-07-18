@@ -24,7 +24,7 @@ export class CandidateController {
 
   @Put(':id')
   async updateCandidate(@Body() body, @Param('id') id: number){
-    return this.candidateService.updateCandidate(id)
+    return this.candidateService.updateCandidate(id, body)
   }
 
   @Delete(':id')
