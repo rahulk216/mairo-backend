@@ -12,9 +12,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { OrganizationModule } from './organization/organization.module';
 import { SkillsModule } from './skills/skills.module';
 import { CandidateModule } from './candidate/candidate.module';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
-  imports: [UserModule, PrismaModule, OrganizationModule, SkillsModule, CandidateModule],
+  imports: [UserModule, PrismaModule, OrganizationModule, SkillsModule, CandidateModule, JobsModule],
   controllers: [AppController],
   providers: [AppService],
 })
