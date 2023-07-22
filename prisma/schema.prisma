@@ -45,7 +45,7 @@ model Jobs{
   jobTier             String
   skillList           String
   jobSalary           Float
-  candidate           Candidate[]
+  candidateJobStatus  CandidateJobStatus[]           
 }
 
 model Candidate{
@@ -56,9 +56,16 @@ model Candidate{
   experience          Float
   email               String
   phone               String
-  jobStatus           String
-  jobs                Jobs []
+  candidateStatus     CandidateJobStatus[]
   candResumeURL       String
+}
+
+model CandidateJobStatus{
+  id                  Int @id @default(autoincrement())
+  candidateId         Int
+  candidate           Candidate @relation(fields: [candidateId], references: [id])  
+  jobId               Int
+  job                 Jobs @relation(fields: [jobId], references: [id])
 }
 
 model Skill{
@@ -69,5 +76,5 @@ model Skill{
 
 enum UserType {
   ADMIN
-  MAIORA
+  CLIENT
 }

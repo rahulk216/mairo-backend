@@ -33,7 +33,7 @@ export class OrganizationController {
 
   @Get(':id')
   @UseGuards(RolesGuard)
-  @Roles('ADMIN', 'MAIORA')
+  @Roles('ADMIN', 'CLIENT')
   async getOrganizationById(@Param('id') id: number) {
     return this.organizationService.getOrganizationById(id);
   }

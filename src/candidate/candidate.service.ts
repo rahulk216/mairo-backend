@@ -1,14 +1,14 @@
 import { PrismaService } from './../prisma/prisma.service';
 import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-interface createCandidateParams{
+interface createCandidateParams {
   name: string;
   candidate_token: string;
-  candidateLocation: string; 
+  candidateLocation: string;
   experience: number;
-  email: string; 
-  phone: string; 
-  jobStatus: string; 
+  email: string;
+  phone: string;
+  jobStatus: string;
   candResumeURL: string;
 }
 
@@ -16,19 +16,17 @@ interface createCandidateParams{
 export class CandidateService {
   constructor(private readonly prismaService: PrismaService) { }
 
-  async createCandidate(body: createCandidateParams){
-    const {name, candidate_token, candidateLocation, experience, email, phone, jobStatus, candResumeURL} = body
-    console.log(name, candidate_token, candidateLocation, experience, email, phone, jobStatus, candResumeURL)
+  async createCandidate(body: createCandidateParams) {
+    const { name, candidate_token, candidateLocation, experience, email, phone, candResumeURL } = body
 
     const response = await this.prismaService.candidate.create({
-      data:{
+      data: {
         name,
         candidate_token,
         candidateLocation,
         experience,
         email,
         phone,
-        jobStatus,
         candResumeURL
       }
     })
@@ -36,13 +34,13 @@ export class CandidateService {
     if (response) return response;
   }
 
-  async getAllCandidates(){
+  async getAllCandidates() {
     const response = await this.prismaService.candidate.findMany();
     if (response) return response;
     else return {};
   }
 
-  async getCandidateById(id){
+  async getCandidateById(id) {
     const response = await this.prismaService.candidate.findUnique({
       where: {
         id: Number(id),
@@ -52,7 +50,7 @@ export class CandidateService {
     else return {};
   }
 
-  async updateCandidate(id, body){
+  async updateCandidate(id, body) {
     const userExists = await this.prismaService.candidate.findUnique({
       where: {
         id: id,
@@ -70,18 +68,18 @@ export class CandidateService {
 
     if (response) throw new HttpException('Candidate Updated', HttpStatus.OK);
     throw new HttpException('Candidate not updated', HttpStatus.OK)
-    
-    
+
+
   }
 
-  async deleteCandidate(id){
+  async deleteCandidate(id) {
     const candidateExists = await this.prismaService.candidate.findUnique({
-      where:{
+      where: {
         id: Number(id)
       }
     })
 
-    if(!candidateExists) throw new HttpException('Candidate does not exist', HttpStatus.NOT_FOUND);
+    if (!candidateExists) throw new HttpException('Candidat e does not exist', HttpStatus.NOT_FOUND);
 
     const response = await this.prismaService.candidate.delete({
       where: {
